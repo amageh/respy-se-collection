@@ -1,0 +1,21 @@
+name: respy-se-collection
+channels:
+  - opensourceeconomics
+  - conda-forge
+dependencies:
+  - python=3.7
+  - pip
+  - anaconda-client
+  - estimagic>=0.0.30
+  - respy>=2.0.0dev5
+  - joblib
+  - jupyterlab
+  - matplotlib
+  - numba
+  - pandas
+  - pdbpp
+  - scipy
+  - seaborn
+  - pip:
+    - flake8-nb
+    - black-nb
