@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     elif MODEL == "kw_97_extended":
         _, options, data = rp.get_example_model(MODEL)
-        params = pd.read_pickle(f"{MODEL}/params_revised_extended.pkl")
+        params = pd.read_csv(f"{MODEL}/kw_97_extended_respy.csv", index_col=["category", "name"])
         params = params[["value"]]
 
         # Workaround for a bug between respy and estimagic, will be
