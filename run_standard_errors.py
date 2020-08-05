@@ -91,6 +91,7 @@ if __name__ == "__main__":
 
     elif MODEL == "kw_97_extended":
         _, options, data = rp.get_example_model(MODEL)
+        options["n_periods"] = 11
         params = pd.read_csv(f"{MODEL}/kw_97_extended_respy.csv", index_col=["category", "name"])
         params = params[["value"]]
 
