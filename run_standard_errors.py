@@ -72,7 +72,7 @@ def params_sdcorr_to_chol(params):
 if __name__ == "__main__":
 
     # Select model:
-    MODEL = "kw_97_extended"
+    MODEL = "kw_94_one"
 
     # Increase number of draws for higher accuracy.
     SOLUTION_DRAWS = 1000
@@ -91,7 +91,6 @@ if __name__ == "__main__":
 
     elif MODEL == "kw_97_extended":
         _, options, data = rp.get_example_model(MODEL)
-        options["n_periods"] = 11
         params = pd.read_csv(f"{MODEL}/kw_97_extended_respy.csv", index_col=["category", "name"])
         params = params[["value"]]
 
