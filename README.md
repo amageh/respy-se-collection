@@ -9,7 +9,7 @@ The following files will be created:
 - `covariance_<model>_numpy.pkl`: (Inner) covariance matrix as a numpy.array. 
 - `params_<model>_se.pkl`: respy parameter DataFrame (cholesky factor version) with column `se` containing computed standard errors.
 
-All files currently saved to the repository are created using 1000 solution and 400 estimation draws, which is double the default settings. The parameters used for the **KW97** models are new estimates that have not been integrated into the respy interface yet and are thus saved in their respective folders as pickle files.
+All files currently saved to the repository are created using 1000 solution and 400 estimation draws, which is double the default settings.
 
 Feedback is very welcome. For questions and comments please raise an issue or contact me directly.
 
