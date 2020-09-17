@@ -7,13 +7,14 @@ dependencies:
   - pip
   - anaconda-client
   - estimagic>=0.0.30
-  - respy>=2.0.0dev5
+  - respy>=2.0.0
   - joblib
   - jupyterlab
   - matplotlib
   - numba
   - pandas
   - pdbpp
+  - pre-commit
   - scipy
   - seaborn
   - pip:

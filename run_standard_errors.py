@@ -1,28 +1,28 @@
-""" Compute standard errors for parameter estimates of respy models."""
-
+"""Compute standard errors for parameter estimates of respy models."""
 import pickle
-import respy as rp
-import pandas as pd
+
 import numpy as np
-
-# Functions needed to transform parameter vector.
-from estimagic.optimization.utilities import sdcorr_params_to_matrix
-from estimagic.optimization.utilities import robust_cholesky
-
-# Functions needed to get internal criterion and parameters.
-from estimagic.optimization.transform_problem import transform_problem
-from estimagic.optimization.broadcast_arguments import broadcast_arguments
-from estimagic.optimization.check_arguments import check_arguments
-from estimagic.optimization.process_constraints import process_constraints
-
-# Functions needed to compute covariance.
+import pandas as pd
+import respy as rp
 from estimagic.differentiation.numdiff_np import first_derivative
 from estimagic.inference.likelihood_covs import cov_jacobian
 from estimagic.inference.likelihood_covs import se_from_cov
+from estimagic.optimization.broadcast_arguments import broadcast_arguments
+from estimagic.optimization.check_arguments import check_arguments
+from estimagic.optimization.process_constraints import process_constraints
+from estimagic.optimization.transform_problem import transform_problem
+from estimagic.optimization.utilities import robust_cholesky
+from estimagic.optimization.utilities import sdcorr_params_to_matrix
+
+# Functions needed to transform parameter vector.
+# Functions needed to get internal criterion and parameters.
+# Functions needed to compute covariance.
 
 
 def shocks_sdcorr_to_shocks_chol(params):
     """
+    Transform shocks.
+
     Shocks from standard deviation/correlation matrix to shocks
     from cholesky factor of variance-covariance matrix.
     """
@@ -53,8 +53,10 @@ def shocks_sdcorr_to_shocks_chol(params):
 
 
 def params_sdcorr_to_chol(params):
-    """Create new parameter vector with cholesky shocks in place of shocks from
-    sd/corr matrix.
+    """Create new parameter vector with cholesky shocks.
+
+    Cholesky shocks replace shocks from sd/corr matrix.
+
     """
     params = params.copy()
     shocks = shocks_sdcorr_to_shocks_chol(params)
@@ -73,25 +75,17 @@ if __name__ == "__main__":
 
     # Select model:
     MODEL = "kw_94_one"
-
     # Increase number of draws for higher accuracy.
     SOLUTION_DRAWS = 1000
     ESTIMATION_DRAWS = 400
 
-    if "kw_94" in MODEL:
+    if "kw_94" in MODEL or "kw_97_basic" in MODEL:
         params, options, data = rp.get_example_model(MODEL)
         params = params[["value"]]
         constr = rp.get_parameter_constraints(MODEL)
 
-    elif MODEL == "kw_97_basic":
-        _, options, data = rp.get_example_model(MODEL)
-        params = pd.read_pickle(f"{MODEL}/params_revised_basic.pkl")
-        params = params[["value"]]
-        constr = rp.get_parameter_constraints(MODEL)
-
-    elif MODEL == "kw_97_extended":
-        _, options, data = rp.get_example_model(MODEL)
-        params = pd.read_csv(f"{MODEL}/kw_97_extended_respy.csv", index_col=["category", "name"])
+    elif "kw_97_extended" in MODEL:
+        params, options, data = rp.get_example_model(MODEL)
         params = params[["value"]]
 
         # Workaround for a bug between respy and estimagic, will be
@@ -139,10 +133,10 @@ if __name__ == "__main__":
     # Get parameter vector with cholesky shocks.
     params_new = params_sdcorr_to_chol(params)
 
-    # Get likelihood functon.
+    # Get likelihood function.
     options["solution_draws"] = SOLUTION_DRAWS
     options["estimation_draws"] = ESTIMATION_DRAWS
-    log_likelihood_contrib = rp.get_crit_func(
+    log_likelihood_contrib = rp.get_log_like_func(
         params_new, options, data, return_scalar=False
     )
 
